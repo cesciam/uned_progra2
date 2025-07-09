@@ -141,11 +141,11 @@ public class RegistroExportacion {
             }
 
             // Una vez que todos los datos son válidos, se crea el objeto
-            Exportacion nuevaExportacion = new Exportacion(id, nombre, tipoExp, zona, servicio, kilos);
-            exportaciones.add(nuevaExportacion);
+            //Exportacion nuevaExportacion = new Exportacion(id, nombre, tipoExp, zona, servicio, kilos);
+            // exportaciones.add(nuevaExportacion);
 
-            System.out.println("\n>> ¡Exportación registrada con éxito! <<");
-            System.out.printf("Costo de la exportación: $%.2f%n", nuevaExportacion.getCostoTotal());
+            // System.out.println("\n>> ¡Exportación registrada con éxito! <<");
+            // System.out.printf("Costo de la exportación: $%.2f%n", nuevaExportacion.getCostoTotal());
 
         } catch (Exception e) {
             // Este catch es una red de seguridad para cualquier error inesperado
@@ -186,14 +186,6 @@ public class RegistroExportacion {
         double costoTotalECS = 0;
         double totalKilos = 0;
 
-        for (Exportacion exp : exportaciones) {
-            totalKilos += exp.getKilogramosEmbalar();
-            if ("ECP".equals(exp.getTipoExportacion())) {
-                costoTotalECP += exp.getCostoTotal();
-            } else {
-                costoTotalECS += exp.getCostoTotal();
-            }
-        }
 
         System.out.println("\n** Resumen de Costos por Tipo de Exportación **");
         System.out.printf("Costo total ECP (Carga Pesada): $%.2f%n", costoTotalECP);

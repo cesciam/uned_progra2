@@ -3,54 +3,19 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Representa una operación de exportación con todos sus datos asociados.
- * Esta clase encapsula la información y realiza las validaciones y cálculos
- * requeridos por el sistema "Registro de Exportación".
+ * CLASE ABSTRACTA que sirve como base para todos los tipos de exportación.
+ * Define los atributos y métodos comunes, y declara los métodos que deben ser
+ * implementados por sus clases hijas.
  */
-public class Exportacion {
+public abstract class Exportacion {
 
-    // --- Atributos de la Clase ---
-    /**
-     * Cédula de identificación del cliente.
-     */
-    private String idCliente;
-
-    /**
-     * Nombre completo del cliente.
-     */
-    private String nombreCompleto;
-
-    /**
-     * Nomenclatura del tipo de exportación.
-     */
-    private String tipoExportacion;
-
-    /**
-     * Fecha en que se registra la exportación.
-     * Se obtiene automáticamente del sistema.
-     */
-    private final LocalDate fechaExportacion;
-
-    /**
-     * País de destino de la mercancía.
-     */
-    private String zonaEnvio;
-
-    /**
-     * Medio de transporte utilizado.
-     * Valores válidos: "Barco" o "Avion".
-     */
-    private String tipoServicio;
-
-    /**
-     * Peso total de la mercancía a embalar en kilogramos.
-     */
-    private double kilogramosEmbalar;
-
-    /**
-     * Costo total calculado para la exportación.
-     */
-    private double costoTotal;
+    protected String idCliente;
+    protected String nombreCompleto;
+    protected LocalDate fechaExportacion;
+    protected String zonaEnvio;
+    protected String tipoServicio; // "Barco" o "Avion"
+    protected double kilogramosEmbalar;
+    protected double costoTotal;
 
 
     // --- Constructor ---
@@ -60,27 +25,23 @@ public class Exportacion {
      *
      * @param idCliente Cédula del cliente (formato X-XXXX-XXXX).
      * @param nombreCompleto Nombre del cliente (mínimo 7 caracteres).
-     * @param tipoExportacion Tipo de carga ("ECP" o "ECS").
      * @param zonaEnvio País de destino.
      * @param tipoServicio Medio de transporte ("Barco" o "Avion").
      * @param kilogramosEmbalar Peso en Kg de la mercancía.
      */
-    public Exportacion(String idCliente, String nombreCompleto, String tipoExportacion, 
-                       String zonaEnvio, String tipoServicio, double kilogramosEmbalar) {
+    public Exportacion(String idCliente, String nombreCompleto, String zonaEnvio, 
+                       String tipoServicio, double kilogramosEmbalar) {
         
         // Se asignan los valores utilizando los setters para aplicar validaciones
-        this.setIdCliente(idCliente);
-        this.setNombreCompleto(nombreCompleto);
-        this.setTipoExportacion(tipoExportacion);
-        this.setZonaEnvio(zonaEnvio);
-        this.setTipoServicio(tipoServicio);
-        this.setKilogramosEmbalar(kilogramosEmbalar);
+        this.idCliente = idCliente;
+        this.nombreCompleto = nombreCompleto;
+        this.zonaEnvio = zonaEnvio;
+        this.tipoServicio = tipoServicio;
+        this.kilogramosEmbalar = kilogramosEmbalar;
+        this.fechaExportacion = LocalDate.now();
         
         // La fecha se asigna automáticamente con la fecha actual del sistema
         this.fechaExportacion = LocalDate.now();
-        
-        // El costo se calcula internamente al crear el objeto
-        this.costoTotal = this.calcularCostoExportacion();
     }
 
     // --- Métodos Getters y Setters con Validaciones ---
@@ -116,22 +77,6 @@ public class Exportacion {
             throw new IllegalArgumentException("El nombre completo debe tener al menos 7 caracteres.");
         }
         this.nombreCompleto = nombreCompleto;
-    }
-
-    public String getTipoExportacion() {
-        return tipoExportacion;
-    }
-
-    /**
-     * Asigna el tipo de exportación.
-     * Valida que sea "ECP" o "ECS".
-     * @param tipoExportacion El tipo a validar y asignar.
-     */
-    public final void setTipoExportacion(String tipoExportacion) {
-        if (tipoExportacion == null || (!tipoExportacion.equalsIgnoreCase("ECP") && !tipoExportacion.equalsIgnoreCase("ECS"))) {
-            throw new IllegalArgumentException("Tipo de exportación incorrecto. Debe ser 'ECP' o 'ECS'.");
-        }
-        this.tipoExportacion = tipoExportacion.toUpperCase();
     }
 
     /**
@@ -202,15 +147,7 @@ public class Exportacion {
      * Este método es privado porque su invocación es una lógica interna de la clase.
      * @return El costo total calculado.
      */
-    private double calcularCostoExportacion() {
-        double costoPorKilo;
-        if (this.tipoServicio.equalsIgnoreCase("Avion")) {
-            costoPorKilo = 450;
-        } else { // "Barco"
-            costoPorKilo = 150;
-        }
-        return this.kilogramosEmbalar * costoPorKilo;
-    }
+    public abstract double calcularCosto(); 
 
     /**
      * Realiza la conversión de los kilogramos de esta exportación a gramos.
@@ -249,7 +186,6 @@ public class Exportacion {
         return "Exportacion{" +
                 "idCliente='" + idCliente + '\'' +
                 ", nombreCompleto='" + nombreCompleto + '\'' +
-                ", tipoExportacion='" + tipoExportacion + '\'' +
                 ", fechaExportacion=" + getFechaExportacionFormateada() +
                 ", zonaEnvio='" + zonaEnvio + '\'' +
                 ", tipoServicio='" + tipoServicio + '\'' +
