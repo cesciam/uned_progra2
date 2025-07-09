@@ -5,6 +5,10 @@
  */
 package vista;
 
+import Clases.Exportacion;
+import Clases.ExportacionCargaPesada;
+import Clases.ExportacionCargaSuelta;
+
 /**
  *
  * @author cesc
@@ -17,14 +21,13 @@ public class DialogoNuevaExportacion extends javax.swing.JDialog {
     public DialogoNuevaExportacion(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        // --- CÓDIGO NUEVO A AGREGAR ---
+
         // Ocultamos los campos específicos justo después de que son creados.
         lblTipoCarga.setVisible(false);
         cmbTipoCarga.setVisible(false);
         lblPiesCarga.setVisible(false);
         txtPiesCarga.setVisible(false);
 
-        // El resto del código, como centrar la ventana.
         this.setLocationRelativeTo(parent);
     }
 
@@ -38,11 +41,11 @@ public class DialogoNuevaExportacion extends javax.swing.JDialog {
     private void initComponents() {
 
         lblIDCliente = new javax.swing.JLabel();
-        txtIDCliente = new javax.swing.JTextField();
+        txtIdCliente = new javax.swing.JTextField();
         cmbTipoExportacion = new javax.swing.JComboBox<>();
         btnGuardar = new javax.swing.JButton();
         lblNombre = new javax.swing.JLabel();
-        txtNombre = new javax.swing.JTextField();
+        txtNombreCompleto = new javax.swing.JTextField();
         lblZona = new javax.swing.JLabel();
         lblKilos = new javax.swing.JLabel();
         lblTipoExportacion = new javax.swing.JLabel();
@@ -50,8 +53,8 @@ public class DialogoNuevaExportacion extends javax.swing.JDialog {
         cmbTipoServicio = new javax.swing.JComboBox<>();
         btnCancelar = new javax.swing.JButton();
         lblPiesCarga = new javax.swing.JLabel();
-        txtZona = new javax.swing.JTextField();
-        txtKilos = new javax.swing.JTextField();
+        txtZonaEnvio = new javax.swing.JTextField();
+        txtKilogramos = new javax.swing.JTextField();
         txtPiesCarga = new javax.swing.JTextField();
         lblTipoCarga = new javax.swing.JLabel();
         cmbTipoCarga = new javax.swing.JComboBox<>();
@@ -60,9 +63,9 @@ public class DialogoNuevaExportacion extends javax.swing.JDialog {
 
         lblIDCliente.setText("ID Cliente");
 
-        txtIDCliente.addActionListener(new java.awt.event.ActionListener() {
+        txtIdCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtIDClienteActionPerformed(evt);
+                txtIdClienteActionPerformed(evt);
             }
         });
 
@@ -95,7 +98,7 @@ public class DialogoNuevaExportacion extends javax.swing.JDialog {
 
         lblTipoServicio.setText("Tipo de Servicio");
 
-        cmbTipoServicio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<Seleccione un Tipo>", "Barco", "Avión" }));
+        cmbTipoServicio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<Seleccione un Servicio>", "Barco", "Avión" }));
         cmbTipoServicio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbTipoServicioActionPerformed(evt);
@@ -113,7 +116,7 @@ public class DialogoNuevaExportacion extends javax.swing.JDialog {
 
         lblTipoCarga.setText("Tipo de carga");
 
-        cmbTipoCarga.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<Seleccione un Tipo>", "Contenedor Refrigerado", "Contenedor no refrigerado", "Carga embalada" }));
+        cmbTipoCarga.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<Seleccione la Carga>", "Contenedor Refrigerado", "Contenedor no refrigerado", "Carga embalada" }));
         cmbTipoCarga.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbTipoCargaActionPerformed(evt);
@@ -151,10 +154,10 @@ public class DialogoNuevaExportacion extends javax.swing.JDialog {
                                     .addComponent(lblIDCliente))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtNombre)
-                                    .addComponent(txtZona)
-                                    .addComponent(txtKilos)
-                                    .addComponent(txtIDCliente)))))
+                                    .addComponent(txtNombreCompleto)
+                                    .addComponent(txtZonaEnvio)
+                                    .addComponent(txtKilogramos)
+                                    .addComponent(txtIdCliente)))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnGuardar)
@@ -172,19 +175,19 @@ public class DialogoNuevaExportacion extends javax.swing.JDialog {
                 .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblIDCliente)
-                    .addComponent(txtIDCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtIdCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNombre)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNombreCompleto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblZona)
-                    .addComponent(txtZona, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtZonaEnvio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(lblKilos)
-                    .addComponent(txtKilos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtKilogramos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(19, 19, 19)
@@ -215,7 +218,67 @@ public class DialogoNuevaExportacion extends javax.swing.JDialog {
     }//GEN-LAST:event_cmbTipoExportacionActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        // TODO add your handling code here:
+            try {
+            // --- 1. Leer y validar datos comunes ---
+            String idCliente = txtIdCliente.getText();
+            String nombreCompleto = txtNombreCompleto.getText();
+            String zonaEnvio = txtZonaEnvio.getText();
+            // Lanza una excepción si los campos están vacíos
+            if (idCliente.trim().isEmpty() || nombreCompleto.trim().isEmpty() || zonaEnvio.trim().isEmpty()) {
+                throw new IllegalArgumentException("Los campos de texto no pueden estar vacíos.");
+            }
+            
+            if (!idCliente.matches("\\d{1}-\\d{4}-\\d{4}")) {
+                throw new IllegalArgumentException("El formato del ID de cliente es incorrecto. Use X-XXXX-XXXX.");
+            }
+
+            double kilogramos = Double.parseDouble(txtKilogramos.getText());
+            String tipoServicio = (String) cmbTipoServicio.getSelectedItem();
+            if (tipoServicio.equals("<Seleccione un Servicio>")) {
+                // Lanza una excepción si no se ha seleccionado una opción válida
+                throw new IllegalArgumentException("Debe seleccionar un tipo de servicio (Barco o Avión).");
+            }
+
+            // --- 2. Determinar qué tipo de objeto crear ---
+            String tipoExportacion = (String) cmbTipoExportacion.getSelectedItem();
+
+            Exportacion nuevaExportacion = null; // Variable para guardar el nuevo objeto
+
+            if (tipoExportacion.equals("Carga Pesada")) {
+    
+                String tipoCarga = (String) cmbTipoCarga.getSelectedItem();
+                if (tipoCarga.equals("<Seleccione la Carga>")) {
+                    throw new IllegalArgumentException("Debe seleccionar un tipo de carga.");
+                }
+
+                // Crea un objeto de tipo ExportacionCargaPesada
+                nuevaExportacion = new ExportacionCargaPesada(idCliente, nombreCompleto, zonaEnvio, tipoServicio, kilogramos, tipoCarga);
+
+            } else if (tipoExportacion.equals("Carga Suelta")) {
+                double piesCarga = Double.parseDouble(txtPiesCarga.getText());
+                // Crea un objeto de tipo ExportacionCargaSuelta
+                nuevaExportacion = new ExportacionCargaSuelta(idCliente, nombreCompleto, zonaEnvio, tipoServicio, kilogramos, piesCarga);
+
+            } else {
+                // Si no se seleccionó un tipo válido
+                 javax.swing.JOptionPane.showMessageDialog(this, "Debe seleccionar un tipo de exportación válido.", "Error de Validación", javax.swing.JOptionPane.ERROR_MESSAGE);
+                return; // Termina la ejecución del método
+            }
+
+            // --- 3. Si todo salió bien ---
+            // Por ahora, solo mostraremos el objeto en consola para verificar
+            System.out.println("Exportación creada con éxito: " + nuevaExportacion.toString());
+
+            // Cierra la ventana de diálogo
+            this.dispose(); 
+
+        } catch (NumberFormatException e) {
+            // Error si el usuario ingresa texto en un campo numérico
+            javax.swing.JOptionPane.showMessageDialog(this, "Error en el formato de número. Verifique los kilogramos o pies.", "Error de Formato", javax.swing.JOptionPane.ERROR_MESSAGE);
+        } catch (IllegalArgumentException e) {
+            // Captura otras validaciones (campos vacíos, etc.)
+            javax.swing.JOptionPane.showMessageDialog(this, e.getMessage(), "Error de Validación", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void cmbTipoServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTipoServicioActionPerformed
@@ -223,12 +286,12 @@ public class DialogoNuevaExportacion extends javax.swing.JDialog {
     }//GEN-LAST:event_cmbTipoServicioActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        // TODO add your handling code here:
+            this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
-    private void txtIDClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIDClienteActionPerformed
+    private void txtIdClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdClienteActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtIDClienteActionPerformed
+    }//GEN-LAST:event_txtIdClienteActionPerformed
 
     private void cmbTipoCargaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTipoCargaActionPerformed
         // TODO add your handling code here:
@@ -315,10 +378,10 @@ public class DialogoNuevaExportacion extends javax.swing.JDialog {
     private javax.swing.JLabel lblTipoExportacion;
     private javax.swing.JLabel lblTipoServicio;
     private javax.swing.JLabel lblZona;
-    private javax.swing.JTextField txtIDCliente;
-    private javax.swing.JTextField txtKilos;
-    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtIdCliente;
+    private javax.swing.JTextField txtKilogramos;
+    private javax.swing.JTextField txtNombreCompleto;
     private javax.swing.JTextField txtPiesCarga;
-    private javax.swing.JTextField txtZona;
+    private javax.swing.JTextField txtZonaEnvio;
     // End of variables declaration//GEN-END:variables
 }
