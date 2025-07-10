@@ -4,6 +4,12 @@
  * and open the template in the editor.
  */
 package vista;
+import Clases.Exportacion;
+import Clases.ExportacionCargaPesada;
+import Clases.ExportacionCargaSuelta;
+import java.io.*;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -11,11 +17,38 @@ package vista;
  */
 public class VentanaPrincipal extends javax.swing.JFrame {
 
+    private java.util.ArrayList<Exportacion> listaExportaciones = new java.util.ArrayList<>();
     /**
      * Creates new form VentanaPrincipal
      */
     public VentanaPrincipal() {
         initComponents();
+        cargarDatos();
+        actualizarTabla();
+    }
+    
+    private void guardarDatos() {
+        // Guarda la lista completa de exportaciones en el archivo Exportaciones.dat
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("Exportaciones.dat"))) {
+            oos.writeObject(this.listaExportaciones);
+            System.out.println("Datos guardados correctamente.");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error al guardar los datos en el archivo.", "Error de Archivo", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void cargarDatos() {
+        // Carga la lista de exportaciones desde el archivo Exportaciones.dat
+        File archivo = new File("Exportaciones.dat");
+        if (archivo.exists()) {
+            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo))) {
+                // Lee el objeto del archivo y lo convierte de nuevo a una ArrayList
+                this.listaExportaciones = (ArrayList<Exportacion>) ois.readObject();
+                System.out.println("Datos cargados correctamente.");
+            } catch (IOException | ClassNotFoundException e) {
+                JOptionPane.showMessageDialog(this, "Error al cargar los datos desde el archivo.", "Error de Archivo", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 
     /**
@@ -66,43 +99,80 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnNueva)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(btnEliminar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnModificar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(21, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(255, 255, 255)
+                        .addComponent(btnNueva)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnModificar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(280, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(32, 32, 32)
-                .addComponent(btnNueva)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnModificar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnEliminar)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(59, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnNueva)
+                    .addComponent(btnModificar)
+                    .addComponent(btnEliminar))
+                .addGap(86, 86, 86)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevaActionPerformed
-        // 1. Crea una nueva instancia del diálogo.
         //    El 'this' se refiere a la VentanaPrincipal (su padre).
         //    El 'true' lo hace "modal" (bloquea la ventana de atrás hasta que este se cierre).
         DialogoNuevaExportacion dialogo = new DialogoNuevaExportacion(this, true);
-
-        // 2. Centra el diálogo en la pantalla respecto a la ventana principal.
-        dialogo.setLocationRelativeTo(this);
-
-        // 3. Muestra el diálogo. El programa se detendrá aquí hasta que el diálogo se cierre.
         dialogo.setVisible(true);
+        
+        Exportacion exportacionCreada = dialogo.getNuevaExportacion();
+
+        if (exportacionCreada != null) {
+            this.listaExportaciones.add(exportacionCreada);
+            this.actualizarTabla();
+
+            // Llama al método para guardar la lista actualizada en el archivo
+            this.guardarDatos();
+        }
     }//GEN-LAST:event_btnNuevaActionPerformed
 
+    private void actualizarTabla() {
+        // Define los nombres de las columnas para la tabla
+        String[] columnas = {"ID Cliente", "Nombre", "Fecha", "Zona Envío", "Servicio", "Costo Total"};
+
+        // Crea un modelo de tabla no editable
+        javax.swing.table.DefaultTableModel modeloTabla = new javax.swing.table.DefaultTableModel(columnas, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; 
+            }
+        };
+
+        // Recorre la lista de exportaciones
+        for (Exportacion exp : this.listaExportaciones) {
+            // Crea una fila con los datos de cada objeto
+            Object[] fila = {
+                exp.getIdCliente(),
+                exp.getNombreCompleto(),
+                exp.getFechaExportacionFormateada(),
+                exp.getZonaEnvio(),
+                exp.getTipoServicio(),
+                String.format("$%.2f", exp.getCostoTotal()) // Formatea el costo
+            };
+            // Agrega la fila al modelo
+            modeloTabla.addRow(fila);
+        }
+
+        // Asigna el modelo recién creado a nuestra JTable
+        this.tblExportaciones.setModel(modeloTabla);
+    }
+    
+    
     /**
      * @param args the command line arguments
      */

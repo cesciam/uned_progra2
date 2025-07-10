@@ -1,6 +1,6 @@
 package Clases;
 // La palabra clave 'extends' establece la herencia
-public class ExportacionCargaPesada extends Exportacion {
+public class ExportacionCargaPesada extends Exportacion implements java.io.Serializable  {
 
     // Atributo adicional específico de esta clase 
     private String tipoCarga; // "Contenedor Refrigerado", "Contenedor no refrigerado", etc.

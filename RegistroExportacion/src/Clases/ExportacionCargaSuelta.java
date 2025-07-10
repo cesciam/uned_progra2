@@ -4,7 +4,7 @@ package Clases; // O el nombre de tu paquete
  * Representa una exportación de Carga Suelta.
  * Hereda de Exportacion y añade una lógica de costo basada en los pies de la carga.
  */
-public class ExportacionCargaSuelta extends Exportacion {
+public class ExportacionCargaSuelta extends Exportacion  implements java.io.Serializable  {
     private double piesCarga;
 
     public ExportacionCargaSuelta(String idCliente, String nombreCompleto, String zonaEnvio,

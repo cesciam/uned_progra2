@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
  * Define los atributos y métodos comunes, y declara los métodos que deben ser
  * implementados por sus clases hijas.
  */
-public abstract class Exportacion {
+public abstract class Exportacion implements java.io.Serializable  {
 
     protected String idCliente;
     protected String nombreCompleto;

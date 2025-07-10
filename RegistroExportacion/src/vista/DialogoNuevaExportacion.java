@@ -14,7 +14,8 @@ import Clases.ExportacionCargaSuelta;
  * @author cesc
  */
 public class DialogoNuevaExportacion extends javax.swing.JDialog {
-
+    
+    private Exportacion nuevaExportacion = null;
     /**
      * Creates new form DialogoNuevaExportacion
      */
@@ -30,6 +31,8 @@ public class DialogoNuevaExportacion extends javax.swing.JDialog {
 
         this.setLocationRelativeTo(parent);
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -242,7 +245,7 @@ public class DialogoNuevaExportacion extends javax.swing.JDialog {
             // --- 2. Determinar qué tipo de objeto crear ---
             String tipoExportacion = (String) cmbTipoExportacion.getSelectedItem();
 
-            Exportacion nuevaExportacion = null; // Variable para guardar el nuevo objeto
+            this.nuevaExportacion = null; 
 
             if (tipoExportacion.equals("Carga Pesada")) {
     
@@ -281,6 +284,10 @@ public class DialogoNuevaExportacion extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
+    public Exportacion getNuevaExportacion() {
+        return this.nuevaExportacion;
+    }
+    
     private void cmbTipoServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTipoServicioActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbTipoServicioActionPerformed
