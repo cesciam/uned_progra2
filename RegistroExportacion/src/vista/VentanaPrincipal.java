@@ -24,7 +24,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     public VentanaPrincipal() {
         initComponents();
         cargarDatos();
-        actualizarTabla();
+        actualizarTabla(this.listaExportaciones);
     }
     
     private void guardarDatos() {
@@ -65,6 +65,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         btnEliminar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblExportaciones = new javax.swing.JTable();
+        jPanel1 = new javax.swing.JPanel();
+        txtFiltro = new javax.swing.JTextField();
+        cmbTipoFiltro = new javax.swing.JComboBox<>();
+        btnFiltrar = new javax.swing.JButton();
+        btnMostrarTodo = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -76,8 +81,18 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
 
         btnModificar.setText("Modificar Selección");
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
+            }
+        });
 
         btnEliminar.setText("Eliminar Selección");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
         tblExportaciones.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -92,22 +107,79 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblExportaciones);
 
+        txtFiltro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFiltroActionPerformed(evt);
+            }
+        });
+
+        cmbTipoFiltro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Por ID Cliente", "Por Zona de Envío" }));
+
+        btnFiltrar.setText("Filtrar");
+        btnFiltrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFiltrarActionPerformed(evt);
+            }
+        });
+
+        btnMostrarTodo.setText("Mostrar Todo");
+        btnMostrarTodo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMostrarTodoActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 1004, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(cmbTipoFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(55, 55, 55)
+                        .addComponent(btnFiltrar, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(26, 26, 26)
+                        .addComponent(btnMostrarTodo, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(45, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmbTipoFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnFiltrar)
+                    .addComponent(btnMostrarTodo))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(255, 255, 255)
+                        .addGap(265, 265, 265)
                         .addComponent(btnNueva)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnModificar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(280, Short.MAX_VALUE))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(695, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -117,8 +189,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                     .addComponent(btnNueva)
                     .addComponent(btnModificar)
                     .addComponent(btnEliminar))
-                .addGap(86, 86, 86)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE))
+                .addGap(29, 29, 29)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(92, Short.MAX_VALUE))
         );
 
         pack();
@@ -134,14 +209,114 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         if (exportacionCreada != null) {
             this.listaExportaciones.add(exportacionCreada);
-            this.actualizarTabla();
+            this.actualizarTabla(this.listaExportaciones);
 
             // Llama al método para guardar la lista actualizada en el archivo
             this.guardarDatos();
         }
     }//GEN-LAST:event_btnNuevaActionPerformed
 
-    private void actualizarTabla() {
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // 1. Obtiene el índice de la fila seleccionada en la tabla
+        int indiceSeleccionado = this.tblExportaciones.getSelectedRow();
+
+        // 2. Valida si realmente hay una fila seleccionada
+        if (indiceSeleccionado == -1) {
+            // Si no hay nada seleccionado, muestra un mensaje y termina
+            javax.swing.JOptionPane.showMessageDialog(this, "Por favor, seleccione una fila para eliminar.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // 3. Pide confirmación al usuario antes de borrar
+        int confirmacion = javax.swing.JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea eliminar el registro seleccionado?", "Confirmar Eliminación", javax.swing.JOptionPane.YES_NO_OPTION);
+
+        // 4. Si el usuario confirma (presiona "Sí")
+        if (confirmacion == javax.swing.JOptionPane.YES_OPTION) {
+            // Elimina el objeto de la lista en memoria usando su índice
+            this.listaExportaciones.remove(indiceSeleccionado);
+
+            // Refresca la tabla para que se vea el cambio
+            this.actualizarTabla(this.listaExportaciones);
+
+            // Guarda la lista actualizada (sin el objeto) en el archivo
+            this.guardarDatos();
+
+            // Muestra un mensaje de éxito
+            javax.swing.JOptionPane.showMessageDialog(this, "Registro eliminado con éxito.", "Eliminación Completa", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        // 1. Obtiene el índice de la fila seleccionada
+        int indiceSeleccionado = this.tblExportaciones.getSelectedRow();
+
+        // 2. Valida que se haya seleccionado una fila
+        if (indiceSeleccionado == -1) {
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione una fila para modificar.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // 3. Obtiene el objeto original de la lista
+        Exportacion expOriginal = this.listaExportaciones.get(indiceSeleccionado);
+
+        // 4. Abre el diálogo, pasándole el objeto a editar
+        DialogoNuevaExportacion dialogo = new DialogoNuevaExportacion(this, true, expOriginal);
+        dialogo.setVisible(true);
+
+        // 5. Después de que el diálogo se cierra, obtiene el objeto con los cambios
+        Exportacion expModificada = dialogo.getNuevaExportacion();
+
+        // 6. Si el usuario guardó cambios, actualiza la lista
+        if (expModificada != null) {
+            // Reemplaza el objeto viejo con el nuevo en la misma posición
+            this.listaExportaciones.set(indiceSeleccionado, expModificada);
+
+            // Refresca la tabla y guarda los datos
+            this.actualizarTabla(this.listaExportaciones);
+            this.guardarDatos();
+
+            JOptionPane.showMessageDialog(this, "Registro modificado con éxito.", "Modificación Completa", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_btnModificarActionPerformed
+
+    private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFiltroActionPerformed
+
+    private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
+        String textoBusqueda = txtFiltro.getText().toLowerCase();
+        String tipoFiltro = (String) cmbTipoFiltro.getSelectedItem();
+
+        // Creamos una nueva lista vacía para guardar los resultados del filtro
+        ArrayList<Exportacion> listaFiltrada = new ArrayList<>();
+
+        // Recorremos la lista principal de exportaciones
+        for (Exportacion exp : this.listaExportaciones) {
+            if (tipoFiltro.equals("Por ID Cliente")) {
+                // Si el ID del cliente (en minúsculas) contiene el texto de búsqueda
+                if (exp.getIdCliente().toLowerCase().contains(textoBusqueda)) {
+                    listaFiltrada.add(exp); // Lo agregamos a la lista de resultados
+                }
+            } else if (tipoFiltro.equals("Por Zona de Envío")) {
+                // Si la zona de envío (en minúsculas) contiene el texto de búsqueda
+                if (exp.getZonaEnvio().toLowerCase().contains(textoBusqueda)) {
+                    listaFiltrada.add(exp); // Lo agregamos a la lista de resultados
+                }
+            }
+        }
+
+        // Llamamos a actualizarTabla, pasándole la lista con los resultados del filtro
+        this.actualizarTabla(listaFiltrada);
+    }//GEN-LAST:event_btnFiltrarActionPerformed
+
+    private void btnMostrarTodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarTodoActionPerformed
+        // Llama a actualizarTabla con la lista principal completa
+        this.actualizarTabla(this.listaExportaciones);
+        // Opcional: Limpia el campo de texto del filtro
+        txtFiltro.setText("");
+    }//GEN-LAST:event_btnMostrarTodoActionPerformed
+
+    private void actualizarTabla(ArrayList<Exportacion> listaAMostrar) {
         // Define los nombres de las columnas para la tabla
         String[] columnas = {"ID Cliente", "Nombre", "Fecha", "Zona Envío", "Servicio", "Costo Total"};
 
@@ -154,7 +329,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         };
 
         // Recorre la lista de exportaciones
-        for (Exportacion exp : this.listaExportaciones) {
+        for (Exportacion exp : listaAMostrar) {
             // Crea una fila con los datos de cada objeto
             Object[] fila = {
                 exp.getIdCliente(),
@@ -210,9 +385,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnFiltrar;
     private javax.swing.JButton btnModificar;
+    private javax.swing.JButton btnMostrarTodo;
     private javax.swing.JButton btnNueva;
+    private javax.swing.JComboBox<String> cmbTipoFiltro;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblExportaciones;
+    private javax.swing.JTextField txtFiltro;
     // End of variables declaration//GEN-END:variables
 }

@@ -16,6 +16,7 @@ import Clases.ExportacionCargaSuelta;
 public class DialogoNuevaExportacion extends javax.swing.JDialog {
     
     private Exportacion nuevaExportacion = null;
+    private Exportacion exportacionAEditar;
     /**
      * Creates new form DialogoNuevaExportacion
      */
@@ -30,6 +31,47 @@ public class DialogoNuevaExportacion extends javax.swing.JDialog {
         txtPiesCarga.setVisible(false);
 
         this.setLocationRelativeTo(parent);
+    }
+    
+    // En DialogoNuevaExportacion.java
+    public DialogoNuevaExportacion(java.awt.Frame parent, boolean modal, Exportacion expAEditar) {
+        super(parent, modal);
+        initComponents();
+        this.setLocationRelativeTo(parent);
+
+        // Guarda la referencia al objeto que estamos editando
+        this.exportacionAEditar = expAEditar;
+
+        // Cambia el título de la ventana para que diga "Editar"
+        this.setTitle("Editar Exportación");
+
+        // Llama a un nuevo método para llenar el formulario
+        cargarDatosParaEdicion();
+    }
+    
+    private void cargarDatosParaEdicion() {
+        // Llena los campos comunes
+        txtIdCliente.setText(this.exportacionAEditar.getIdCliente());
+        txtNombreCompleto.setText(this.exportacionAEditar.getNombreCompleto());
+        txtZonaEnvio.setText(this.exportacionAEditar.getZonaEnvio());
+        txtKilogramos.setText(String.valueOf(this.exportacionAEditar.getKilogramosEmbalar()));
+        cmbTipoServicio.setSelectedItem(this.exportacionAEditar.getTipoServicio());
+
+        // Llena los campos específicos usando 'instanceof' para saber de qué tipo es
+        if (this.exportacionAEditar instanceof ExportacionCargaPesada) {
+            cmbTipoExportacion.setSelectedItem("Carga Pesada");
+
+            // Convertimos el objeto para acceder a sus métodos específicos
+            ExportacionCargaPesada ecp = (ExportacionCargaPesada) this.exportacionAEditar;
+            cmbTipoCarga.setSelectedItem(ecp.getTipoCarga());
+
+        } else if (this.exportacionAEditar instanceof ExportacionCargaSuelta) {
+            cmbTipoExportacion.setSelectedItem("Carga Suelta");
+
+            // Convertimos el objeto para acceder a sus métodos específicos
+            ExportacionCargaSuelta ecs = (ExportacionCargaSuelta) this.exportacionAEditar;
+            txtPiesCarga.setText(String.valueOf(ecs.getPiesCarga()));
+        }
     }
     
     
@@ -268,12 +310,35 @@ public class DialogoNuevaExportacion extends javax.swing.JDialog {
                 return; // Termina la ejecución del método
             }
 
-            // --- 3. Si todo salió bien ---
-            // Por ahora, solo mostraremos el objeto en consola para verificar
-            System.out.println("Exportación creada con éxito: " + nuevaExportacion.toString());
+                if (this.exportacionAEditar != null) {
+                    // MODO EDICIÓN: Actualiza el objeto existente con los nuevos datos
+                    // (Aquí irían los setters para actualizar el objeto. Por simplicidad,
+                    // crearemos uno nuevo y lo devolveremos, pero lo ideal es usar setters).
 
-            // Cierra la ventana de diálogo
-            this.dispose(); 
+                    // Para mantenerlo simple, crearemos un objeto nuevo con los datos actualizados
+                    // y lo devolveremos.
+                    if (tipoExportacion.equals("Carga Pesada")) {
+                        String tipoCarga = (String) cmbTipoCarga.getSelectedItem();
+                        this.nuevaExportacion = new ExportacionCargaPesada(idCliente, nombreCompleto, zonaEnvio, tipoServicio, kilogramos, tipoCarga);
+                    } else if (tipoExportacion.equals("Carga Suelta")) {
+                        double piesCarga = Double.parseDouble(txtPiesCarga.getText());
+                        this.nuevaExportacion = new ExportacionCargaSuelta(idCliente, nombreCompleto, zonaEnvio, tipoServicio, kilogramos, piesCarga);
+                    }
+                    System.out.println("Exportación actualizada con éxito.");
+
+                } else {
+                    // MODO CREACIÓN: La lógica que ya tenías
+                    if (tipoExportacion.equals("Carga Pesada")) {
+                        String tipoCarga = (String) cmbTipoCarga.getSelectedItem();
+                        this.nuevaExportacion = new ExportacionCargaPesada(idCliente, nombreCompleto, zonaEnvio, tipoServicio, kilogramos, tipoCarga);
+                    } else if (tipoExportacion.equals("Carga Suelta")) {
+                        double piesCarga = Double.parseDouble(txtPiesCarga.getText());
+                        this.nuevaExportacion = new ExportacionCargaSuelta(idCliente, nombreCompleto, zonaEnvio, tipoServicio, kilogramos, piesCarga);
+                    }
+                    System.out.println("Exportación creada con éxito.");
+                }
+
+                this.dispose();
 
         } catch (NumberFormatException e) {
             // Error si el usuario ingresa texto en un campo numérico
